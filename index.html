@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <title>Trending Rental | Premium Cars</title>
+  
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <style>
+    /* إزالة أي هوامش أو أشرطة تمرير مزدوجة من المتصفح */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      /* تم تغيير لون الخلفية ليتطابق مع خلفية موقع السيارات (Apple Background) */
+      background-color: #f5f5f7; 
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body>
+
+  <iframe 
+    src="https://script.google.com/macros/s/AKfycbx1I-Fnqt6jv1jBGTQWTgU2Ay4WIyRCq5y4tpFdiknT_Lcu6OplXa5lziCP79Qo1Otyhw/exec?page=admin"
+    width="100%"
+    height="100%"
+    allow="fullscreen"
+    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none;">
+  </iframe>
+
+  <script>
+    window.onload = function() {
+      // محاولة تشغيل وضع الشاشة الكاملة
+      const iframe = document.querySelector('iframe');
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen().catch((err) => {
+          console.log('وضع ملء الشاشة يتطلب تفاعل المستخدم أولاً:', err.message);
+        });
+      }
+    };
+  </script>
+</body>
+</html>
