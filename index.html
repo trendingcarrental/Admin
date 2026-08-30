@@ -3,20 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <title>Trending Rental | Premium Cars</title>
 
+  <title>Trending Rental | Premium Cars</title>
   <link rel="icon" type="image/png" href="trendinglogo (2).png">
   <link rel="apple-touch-icon" href="TrendingPro.png">
-
   <meta property="og:title" content="Trending Rental | Premium Cars">
   <meta property="og:description" content="احجز سيارتك الفاخرة الآن - نظام إدارة الحجوزات">
-  <meta property="og:image" content="ضع_رابط_الصورة_الكبيرة_هنا.jpg"> <meta property="twitter:card" content="summary_large_image">
-  
+  <meta property="og:image" content="ضع_رابط_الصورة_الكبيرة_هنا.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#f5f5f7">
 
+  <!-- ملاحظة أداء: نطلب الاتصال بخوادم جوجل من هسا (DNS + TLS) بدل ما
+       ننتظر لين يوصل السطر اللي فيه الـ iframe. هذا وحده يقتطع جزء
+       محسوس من وقت الانتظار قبل ما يبدأ محتوى الأدمن يتحمّل أصلاً. -->
+  <link rel="preconnect" href="https://script.google.com">
+  <link rel="preconnect" href="https://script.googleusercontent.com">
+  <link rel="dns-prefetch" href="https://script.google.com">
+  <link rel="dns-prefetch" href="https://script.googleusercontent.com">
+
   <style>
-    /* إزالة الحواف البيضاء ليكون الـ iframe ممتداً بالكامل */
     body, html {
       margin: 0;
       padding: 0;
@@ -25,26 +30,58 @@
       overflow: hidden;
       background-color: #f5f5f7;
     }
+
+    /* شاشة تحميل مؤقّتة — تظهر فوراً (صفحة استضافة ثابتة، سريعة)
+       وتختفي بمجرّد ما الـ iframe يخلّص تحميله فعلياً. بدونها الزائر
+       يشوف شاشة رمادية فاضية طول فترة الانتظار ويظن الموقع متعلّق. */
+    #loadScreen {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; background: #f5f5f7;
+      transition: opacity .4s ease;
+    }
+    #loadScreen img { width: 72px; height: 72px; object-fit: contain; }
+    #loadScreen .spin {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 3px solid rgba(20,126,138,.15); border-top-color: #147E8A;
+      animation: spin .8s linear infinite;
+    }
+    #loadScreen p { margin: 0; font-family: system-ui, -apple-system, sans-serif; font-size: 13px; color: #5b6b6d; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loadScreen.hide { opacity: 0; pointer-events: none; }
+
+    #appFrame { position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; }
   </style>
 </head>
 <body>
-  
-  <iframe 
+
+  <div id="loadScreen">
+    <img src="trendinglogo (2).png" alt="" onerror="this.style.display='none'">
+    <div class="spin"></div>
+    <p>جاري تحميل النظام…</p>
+  </div>
+
+  <iframe
+    id="appFrame"
     src="https://script.google.com/macros/s/AKfycbzzuX0XDJ-4MvF0vqmlo5jhUhPZd7U9fIbJJlPL0qMyIGcbgyRN9blOx6fY-nCVPiV4Iw/exec?page=admin"
     width="100%"
     height="100%"
-    allowfullscreen="true"
-    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none;">
+    allowfullscreen="true">
   </iframe>
 
   <script>
-    window.onload = function() {
-      document.querySelector('iframe')
-        .requestFullscreen()
-        .catch((err) => {
-          console.error('Error attempting to enable full-screen mode:', err.message);
-        });
-    };
+    // نخفي شاشة التحميل بس بعد ما الـ iframe يخلّص فعلياً — مو بتوقيت
+    // عشوائي، حتى ما نكشف شاشة فاضية قبل ما يجهز المحتوى الحقيقي.
+    document.getElementById('appFrame').addEventListener('load', function () {
+      var ls = document.getElementById('loadScreen');
+      ls.classList.add('hide');
+      setTimeout(function () { ls.remove(); }, 450);
+    });
+
+    // ملاحظة: شلت استدعاء requestFullscreen() التلقائي — المتصفحات ما
+    // تسمح بالدخول للشاشة الكاملة تلقائياً بدون ضغطة مستخدم حقيقية،
+    // فكان يفشل بصمت بكل مرة (خطأ بالـ Console بلا أي فائدة فعلية).
+    // إذا تبي زر "ملء الشاشة" حقيقي يشتغل، قولّي أضيفه كزر يدوي.
   </script>
 </body>
 </html>
